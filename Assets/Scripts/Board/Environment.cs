@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Environment : Card {
 
+    override
+    public void effect()
+    { }
+
     public enum EnvType
     {
         JUNGLE,
@@ -16,7 +20,7 @@ public class Environment : Card {
         WASTELAND
     }
 
-    private EnvType envType;
+    protected EnvType envType;
 
     public int lifebloodBonus()
     {
@@ -35,5 +39,12 @@ public class Environment : Card {
         setCardName(name);
         setCardType(CardType.ENVIRONMENT);
         this.envType = et;
+    }
+
+    public Environment()
+    {
+        setCardName("");
+        setCardType(CardType.ENVIRONMENT);
+        this.envType = EnvType.CITY;
     }
 }

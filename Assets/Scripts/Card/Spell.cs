@@ -1,15 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Spell : MonoBehaviour {
+public class Spell : Card {
+    protected int manaCost;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    override
+    public void effect()
+    { }
+
+    public Spell()
+    {
+        cardName = "";
+        cardType = CardType.SPELL;
+        manaCost = 0;
+        
+    }
+
+    public Spell(string name, int mc)
+    {
+        cardName = name;
+        manaCost = mc;
+    }
 }

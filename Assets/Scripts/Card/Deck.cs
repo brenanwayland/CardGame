@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Deck : Card {
+public class Deck {
 
     protected string name;
 

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Card {
+public abstract class Card {
 
-    private string cardName;
-    private int cardID;
+    protected string cardName;
+    protected int cardID;
+
+    public abstract void effect();
 
     public enum CardRarity
     {
@@ -15,7 +17,7 @@ public class Card {
         EXTREMELY_RARE
     }
 
-    private CardRarity cardRarity;
+    protected CardRarity cardRarity;
     
     public enum CardType
     {
@@ -25,7 +27,7 @@ public class Card {
         SPELL
     }
 
-    private CardType cardType;
+    protected CardType cardType;
 
     public string getCardName()
     {

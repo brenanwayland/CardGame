@@ -4,11 +4,17 @@ using System.Collections;
 public class Creature : Card {
     
     // stat fields
-    private int vitality;
-    private int strength;
-    private int guard;
+    protected int vitality;
+    protected int strength;
+    protected int guard;
 
     private int initiative;
+
+    override
+    public void effect()
+    {
+
+    }
 
     public enum CreatureType
     {
@@ -52,11 +58,11 @@ public class Creature : Card {
         KEEN
     }
 
-    private CreatureType creatureType;
-    private CreatureClass creatureClass;
-    private CreatureAttribute[] creatureAttributes;
+    protected CreatureType creatureType;
+    protected CreatureClass creatureClass;
+    protected CreatureAttribute[] creatureAttributes;
 
-    private void setAttributes()
+    protected void setAttributes()
     {
         switch (creatureClass)
         {
@@ -118,6 +124,7 @@ public class Creature : Card {
         initiative--;
     }
 
+    // all-arguments constructor
     public Creature(string name, int vitality, int strength, int guard, CreatureType type, CreatureClass class_)
     {
         setCardName(name);
@@ -130,6 +137,26 @@ public class Creature : Card {
         creatureAttributes = new CreatureAttribute[2];
         setAttributes();
         this.initiative = 1;    
+    }
+
+    //no-arguments constructor
+    public Creature()
+    {
+        setCardName("Card Name");
+        setCardType(CardType.CREATURE);
+        this.vitality = 0;
+        this.strength = 0;
+        this.guard = 0;
+        this.creatureType = CreatureType.MAN;
+        this.creatureClass = CreatureClass.GRUNT;
+        creatureAttributes = new CreatureAttribute[2];
+        setAttributes();
+        this.initiative = 1;
+    }
+
+    public int getVitality()
+    {
+        return vitality;
     }
 
 }

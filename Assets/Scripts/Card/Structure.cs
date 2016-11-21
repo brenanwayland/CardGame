@@ -3,16 +3,28 @@ using System.Collections;
 
 public class Structure : Card {
 
-    private int fortification;
-    private bool isBuffer;
-    private int timeReq;
+    protected int fortification;
+    protected bool isBuffer;
+    protected int timeReq;
+
+    override
+    public void effect(){}
 
     public Structure(string name, int fort, bool ib, int tr)
     {
-        setCardName(name);
-        setCardType(CardType.STRUCTURE);
+        cardName = name;
+        cardType = CardType.STRUCTURE;
         this.fortification = fort;
         this.isBuffer = ib;
         this.timeReq = tr;
+    }
+
+    public Structure()
+    {
+        cardName = "";
+        cardType = CardType.STRUCTURE;
+        this.fortification = 0;
+        this.isBuffer = false;
+        this.timeReq = 0;
     }
 }
