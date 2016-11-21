@@ -17,10 +17,10 @@ public class Deck : Card {
     protected int spellNum;
     protected int envSize;
 
-    /*public Card draw()
+    public Card draw()
     {
         return battleDeck[deckSize--];
-    }*/
+    }
 
     public Deck(string name, Card[] e, Card[] c, Card[] st, Card[] sp)
     {
