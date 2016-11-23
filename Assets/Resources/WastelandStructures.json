@@ -1,0 +1,23 @@
+﻿{
+	"qty": 2,
+	"name": "Funeral Pyre",
+	"rarity": "Common",
+	"fortification": 2,
+	"effect": ""
+},
+{
+	"qty": 1,
+	"name": "Abandoned Mausoleum",
+	"rarity": "Common",
+	"fortification": 2,
+	"effect": ""
+},
+{
+	"qty": 1,
+	"name": "Pentagram Platform",
+	"rarity": "Common",
+	"fortification": 2,
+	"effect": ""
+}
+
+

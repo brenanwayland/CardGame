@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Warground {
+public class Warground : Zone {
 
     private Tile[] creatures1;
     private Tile[] creatures2;
@@ -106,5 +106,7 @@ public class Warground {
             creatures1[i] = new Tile();
             creatures2[i] = new Tile();
         }
+
+        this.zoneType = ZoneType.WARGROUND;
     }
 }

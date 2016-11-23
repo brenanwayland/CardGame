@@ -1,5 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+/*
+ * The engine that runs each duel. It keeps track of game logic, such as 
+ * whose turn it currently is, and cycles through the phases of the game.
+ * All logic for summoning creatures and moving will be contained in the 
+ * Board object.
+ */
 
 public class StateMachine : MonoBehaviour {
 
@@ -16,22 +23,47 @@ public class StateMachine : MonoBehaviour {
         P2WINS
     }
 
-    private GameState current;
+    private GameState currentState;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
     private Board board;
+    private List<Structure> declaredStructures;
+
+    // helper class that keeps track of the building of structures
+    private List<Structure> checkStructuresForBuild()
+    {
+        List<Structure> toBuild = new List<Structure>();
+        for (int i = 0; i < declaredStructures.Count; i++)
+        {
+            if (declaredStructures[i].getTimeReq() == 0)
+            {
+                // add to array
+                toBuild.Add(declaredStructures[i]);
+            }
+        }
+        return toBuild;
+    }
+
+    private void structureCountdown()
+    {
+        for (int i = 0; i < declaredStructures.Count; i++)
+        {
+            Structure current = declaredStructures[i];
+            current.timeReqDown(1);
+        }
+    }
 
 
-	// Use this for initialization
-	void Start () {
-        current = GameState.START;      	
+    // Use this for initialization
+    void Start () {
+        currentState = GameState.START;      	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        switch (current)
+        switch (currentState)
         {
             /*
              * The very beginning of the duel. Players will input their information, select a deck, select
@@ -59,7 +91,7 @@ public class StateMachine : MonoBehaviour {
 
                 //begin the duel by transitioning to the Intro Phase
                 currentPlayer = player1;
-                current = GameState.INTRO;
+                currentState = GameState.INTRO;
                 break;
 
             /*
@@ -69,6 +101,22 @@ public class StateMachine : MonoBehaviour {
             case (GameState.INTRO):
                 //draw
                 currentPlayer.getDeck().draw();
+
+                bool changeBC = false;
+
+                // if the player elects to, they may change their Basecamp's Environment
+                if (changeBC)
+                {
+                    // TODO: Link to player choice
+                    Environment newEnv = new Environment();
+                    if (currentPlayer == player1)
+                    {
+                        board.getBasecamp(1).changeEnvironment(newEnv);
+                    } else
+                    {
+                        board.getBasecamp(2).changeEnvironment(newEnv);
+                    }
+                }
 
                 break;
 
@@ -82,15 +130,17 @@ public class StateMachine : MonoBehaviour {
                 // replenish Lifeblood and Mana
                 if (currentPlayer == player1)
                 {
-                    currentPlayer.regainLifeblood(board.getBasecamp1().getEnvironment().lifebloodBonus());
-                    currentPlayer.regainMana(board.getBasecamp1().getEnvironment().manaBonus());
+                    currentPlayer.regainLifeblood(board.getBasecamp(1).getEnvironment().lifebloodBonus());
+                    currentPlayer.regainMana(board.getBasecamp(1).getEnvironment().manaBonus());
                 } else
                 {
-                    currentPlayer.regainLifeblood(board.getBasecamp2().getEnvironment().lifebloodBonus());
-                    currentPlayer.regainMana(board.getBasecamp2().getEnvironment().manaBonus());
+                    currentPlayer.regainLifeblood(board.getBasecamp(2).getEnvironment().lifebloodBonus());
+                    currentPlayer.regainMana(board.getBasecamp(2).getEnvironment().manaBonus());
                 }
 
                 //check for structures that are due to be built, and build them
+                structureCountdown();
+                checkStructuresForBuild();
                 break;
 
             /*
@@ -101,6 +151,8 @@ public class StateMachine : MonoBehaviour {
                 // player can summon as many creatures as their Lifeblood will allow
 
                 // player announces new structures
+                Structure newStructure = new Structure();
+                declaredStructures[0] = newStructure;
                 break;
 
                 /*
@@ -110,6 +162,9 @@ public class StateMachine : MonoBehaviour {
                  */
             case (GameState.MARCHING):
                 // move logic - check for initiative and create helper function for moving
+                Zone destination = board.getWarground();
+                Creature toMove = new global::Creature();
+                board.move(toMove, toMove.getCurrentLocation(), destination);
                 break;
     
                 /*
@@ -121,6 +176,24 @@ public class StateMachine : MonoBehaviour {
                 // battle logic
                 // create function that lists all possible targets
                 // use Creature's attack function
+
+                //first, replenish all player's Creature's attack initiative
+                for (int i = 0; i < currentPlayer.getCardsInPlay().Length; i++)
+                {
+                    Card current = currentPlayer.getCardsInPlay()[i];
+                    if (current.getCardType() == Card.CardType.CREATURE)
+                    {
+                        Creature currentCreature = (Creature)current;
+                        currentCreature.setAttackInit();
+                    }
+                }
+
+                Creature attacker = new Creature();
+                Creature target = new Creature();
+                if (attacker.getCurrentLocation() == target.getCurrentLocation()) //maybe move this logic elsewhere
+                {
+                    attacker.attack(target);
+                }
                 break;
 
             /*
@@ -129,6 +202,9 @@ public class StateMachine : MonoBehaviour {
              */
             case (GameState.SECONDMARCH):
                 //Again, characters who still have initiative can move.
+                Zone destination2 = board.getWarground();
+                Creature toMove2 = new global::Creature();
+                board.move(toMove2, toMove2.getCurrentLocation(), destination2);
                 break;
 
                 /*
@@ -146,23 +222,23 @@ public class StateMachine : MonoBehaviour {
 
         if(GUILayout.Button("Next Phase"))
         {
-            if (current == GameState.INTRO)
+            if (currentState == GameState.INTRO)
             {
-                current = GameState.REPLENISHING;
-            } else if (current == GameState.REPLENISHING)
+                currentState = GameState.REPLENISHING;
+            } else if (currentState == GameState.REPLENISHING)
             {
-                current = GameState.SUMMONING;
-            } else if (current == GameState.SUMMONING)
+                currentState = GameState.SUMMONING;
+            } else if (currentState == GameState.SUMMONING)
             {
-                current = GameState.MARCHING;
-            } else if (current == GameState.MARCHING)
+                currentState = GameState.MARCHING;
+            } else if (currentState == GameState.MARCHING)
             {
-                current = GameState.BATTLE;
-            } else if (current == GameState.BATTLE) {
-                current = GameState.SECONDMARCH;
-            } else if (current == GameState.SECONDMARCH)
+                currentState = GameState.BATTLE;
+            } else if (currentState == GameState.BATTLE) {
+                currentState = GameState.SECONDMARCH;
+            } else if (currentState == GameState.SECONDMARCH)
             {
-                current = GameState.INTRO;
+                currentState = GameState.INTRO;
             }
         }
 

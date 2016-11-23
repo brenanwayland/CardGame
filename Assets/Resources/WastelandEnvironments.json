@@ -1,0 +1,40 @@
+﻿{
+	"qty": 1,
+	"name": "Haunted Woods",
+	"type": "Forest",
+	"desc": "",
+	"effect": "",
+	"rarity": ""
+},
+{
+	"qty": 1,
+	"name": "Desecrated Graveyard",
+	"type": "Wasteland",
+	"desc": "",
+	"effect": "",
+	"rarity": ""
+},
+{
+	"qty": 1,
+	"name": "Pharoah's Tomb",
+	"type": "Wasteland",
+	"desc": "",
+	"effect": "",
+	"rarity": ""
+},
+{
+	"qty": 1,
+	"name": "Valley of Shadows",
+	"type": "Wasteland",
+	"desc": "",
+	"effect": "",
+	"rarity": ""
+},
+{
+	"qty": 1,
+	"name": "Ghost Town",
+	"type": "Forest",
+	"desc": "",
+	"effect": "",
+	"rarity": ""
+}

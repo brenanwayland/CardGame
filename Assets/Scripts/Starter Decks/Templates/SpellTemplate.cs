@@ -3,12 +3,6 @@ using System.Collections;
 
 public class SpellTemplate : Spell {
 
-    override
-    public void effect()
-    {
-
-    }
-
     public SpellTemplate()
     {
         cardName = "";

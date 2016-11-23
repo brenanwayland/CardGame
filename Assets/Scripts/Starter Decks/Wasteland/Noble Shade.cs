@@ -14,7 +14,7 @@ public class NobleShade : Creature {
         creatureClass = CreatureClass.PALADIN;
     }
 
-    public NobleShade(string name, int v, int st, int g, CreatureType ct, CreatureClass cc) : base(name, v, st, g, ct, cc)
+    public NobleShade(string name, int v, int st, int g, CreatureType ct, CreatureClass cc, Effect e) : base(name, v, st, g, ct, cc, e)
     {
 
     }

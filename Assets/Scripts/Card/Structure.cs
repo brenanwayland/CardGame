@@ -7,9 +7,6 @@ public class Structure : Card {
     protected bool isBuffer;
     protected int timeReq;
 
-    override
-    public void effect(){}
-
     public Structure(string name, int fort, bool ib, int tr)
     {
         cardName = name;
@@ -26,5 +23,40 @@ public class Structure : Card {
         this.fortification = 0;
         this.isBuffer = false;
         this.timeReq = 0;
+    }
+
+    public int getFort()
+    {
+        return fortification;
+    }
+
+    public void setFort(int i)
+    {
+        this.fortification = i;
+    }
+
+    public bool checkBuffer()
+    {
+        return isBuffer;
+    }
+
+    public void setAsBuffer()
+    {
+        this.isBuffer = true;
+    }
+
+    public int getTimeReq()
+    {
+        return timeReq;
+    }
+
+    public void timeReqUp(int i)
+    {
+        timeReq += i;
+    }
+
+    public void timeReqDown(int i)
+    {
+        timeReq -= i;
     }
 }

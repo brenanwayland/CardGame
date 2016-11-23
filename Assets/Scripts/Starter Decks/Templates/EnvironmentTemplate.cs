@@ -3,12 +3,6 @@ using System.Collections;
 
 public class EnvironmentTemplate : Environment {
 
-    override
-    public void effect()
-    {
-
-    }
-
     public EnvironmentTemplate()
     {
         cardName = "";

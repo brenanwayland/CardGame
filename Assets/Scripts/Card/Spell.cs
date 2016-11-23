@@ -4,10 +4,6 @@ using System.Collections;
 public class Spell : Card {
     protected int manaCost;
 
-    override
-    public void effect()
-    { }
-
     public Spell()
     {
         cardName = "";

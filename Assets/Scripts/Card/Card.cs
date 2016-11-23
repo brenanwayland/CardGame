@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Card {
+public class Card {
 
     protected string cardName;
     protected int cardID;
-
-    public abstract void effect();
+    protected Effect effect;
 
     public enum CardRarity
     {

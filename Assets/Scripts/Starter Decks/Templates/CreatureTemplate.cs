@@ -12,9 +12,10 @@ public class CreatureTemplate : Creature {
         guard = 0;
         creatureType = CreatureType.MAN;
         creatureClass = CreatureClass.GRUNT;
+        effect = new NullEffect();
     }
 
-    public CreatureTemplate(string name, int v, int st, int g, CreatureType ct, CreatureClass cc) : base(name, v, st, g, ct, cc)
+    public CreatureTemplate(string name, int v, int st, int g, CreatureType ct, CreatureClass cc, Effect e) : base(name, v, st, g, ct, cc, e)
     {
 
     }

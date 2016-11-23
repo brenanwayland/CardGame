@@ -3,10 +3,6 @@ using System.Collections;
 
 public class Environment : Card {
 
-    override
-    public void effect()
-    { }
-
     public enum EnvType
     {
         JUNGLE,

@@ -8,6 +8,17 @@ public class Player {
     private string playerName;
     private int lifeblood;
     private int mana;
+    private Card[] inPlay;
+
+    public Card[] getCardsInPlay()
+    {
+        return inPlay;
+    }
+
+    public string getName()
+    {
+        return playerName;
+    }
 
     public bool useLifeblood(int i)
     {
@@ -63,6 +74,11 @@ public class Player {
     public Deck getDeck()
     {
         return deck;
+    }
+
+    public int getPlayerNum()
+    {
+        return playerNum;
     }
 
     public Player(int pn, Deck d, string pna, int lb, int m)

@@ -3,19 +3,16 @@ using System.Collections;
 
 public class Creature : Card {
     
-    // stat fields
+    // fields
     protected int vitality;
     protected int strength;
     protected int guard;
+    protected Player owner;
+    protected int moveInit;
+    protected int attackInit;
+    protected Zone currentLocation;
 
-    private int initiative;
-
-    override
-    public void effect()
-    {
-
-    }
-
+    // enums
     public enum CreatureType
     {
         MAN,
@@ -62,6 +59,7 @@ public class Creature : Card {
     protected CreatureClass creatureClass;
     protected CreatureAttribute[] creatureAttributes;
 
+    //for construction
     protected void setAttributes()
     {
         switch (creatureClass)
@@ -114,21 +112,141 @@ public class Creature : Card {
         }
     }
 
-    public bool hasInitiative()
+    //getters and setters
+
+    //initiative
+    public bool canMove()
     {
-        return initiative > 0;
+        return moveInit > 0;
     }
 
-    public void useInitiative()
+    public void decreaseMoveInit(int i)
     {
-        initiative--;
+        moveInit -= i;
     }
+
+    public void increaseMoveInit(int i)
+    {
+        moveInit += i;
+    }
+
+    public bool canAttack()
+    {
+        return attackInit > 0;
+    }
+
+    public void decreaseAttackInit(int i)
+    {
+        attackInit -= i;
+    }
+
+    public void increaseAttackInit(int i)
+    {
+        attackInit += i;
+    }
+
+    public void setAttackInit()
+    {
+        attackInit = 1;
+    }
+
+    //owner
+    public Player getOwner()
+    {
+        return owner;
+    }
+
+    public void setOwner(Player newPlayer)
+    {
+        owner = newPlayer;
+    }
+
+    //location
+    public Zone getCurrentLocation()
+    {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(Zone newZone)
+    {
+        currentLocation = newZone;
+    }
+
+    //vitality
+    public int getVitality()
+    {
+        return vitality;
+    }
+
+    public void damage(int i)
+    {
+        vitality -= i;
+        if (vitality < 0)
+        {
+            vitality = 0;
+        }
+    }
+
+    public void heal(int i)
+    {
+        vitality += i;
+    }
+    
+    //guard
+    public int getGuard()
+    {
+        return guard;
+    }
+
+    public void decreaseGuard(int i)
+    {
+        guard -= i;
+    }
+
+    public void increaseGuard(int i)
+    {
+        guard += i;
+    }
+
+    //strength
+    public int getStrength()
+    {
+        return strength;
+    }
+
+    public void decreaseStrength(int i)
+    {
+        strength -= i;
+    }
+
+    public void increaseStrength(int i)
+    {
+        strength += i;
+    }
+
+    //actions
+    public void attack(Creature target)
+    {
+        if (strength > target.getGuard())
+        {
+            target.damage(strength - target.getGuard());
+        } else if (strength < target.getGuard())
+        {
+            damage(target.getGuard() - strength);
+        }
+    }
+
+    public bool isDestroyed()
+    {
+        return vitality == 0;
+    }
+
 
     // all-arguments constructor
-    public Creature(string name, int vitality, int strength, int guard, CreatureType type, CreatureClass class_)
+    public Creature(string name, int vitality, int strength, int guard, CreatureType type, CreatureClass class_, Effect effect)
     {
-        setCardName(name);
-        setCardType(CardType.CREATURE);
+        this.cardName = name;
+        this.cardType = CardType.CREATURE;
         this.vitality = vitality;
         this.strength = strength;
         this.guard = guard;
@@ -136,14 +254,16 @@ public class Creature : Card {
         this.creatureClass = class_;
         creatureAttributes = new CreatureAttribute[2];
         setAttributes();
-        this.initiative = 1;    
+        this.moveInit = 1;
+        this.attackInit = 1;
+        this.effect = effect;
     }
 
     //no-arguments constructor
     public Creature()
     {
-        setCardName("Card Name");
-        setCardType(CardType.CREATURE);
+        this.cardName = "Card Name";
+        this.cardType = CardType.CREATURE;
         this.vitality = 0;
         this.strength = 0;
         this.guard = 0;
@@ -151,12 +271,9 @@ public class Creature : Card {
         this.creatureClass = CreatureClass.GRUNT;
         creatureAttributes = new CreatureAttribute[2];
         setAttributes();
-        this.initiative = 1;
-    }
-
-    public int getVitality()
-    {
-        return vitality;
+        this.moveInit = 1;
+        this.attackInit = 1;
+        this.effect = new NullEffect();
     }
 
 }
